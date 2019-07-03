@@ -63,11 +63,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     if (email == emailControll.text && senha == senhaControll.text) {
 
-      final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+      final snackBar = SnackBar(content: Text('Autenticado com sucesso'));
      _scaffoldKey.currentState.showSnackBar(snackBar);
 
     } else {
-      final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+      final snackBar = SnackBar(content: Text('Erro na autenticação'));
       _scaffoldKey.currentState.showSnackBar(snackBar);
     }
   }

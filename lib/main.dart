@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final String email = "joao";
   final String senha = "1234";
   Widget retornoFuncao;
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   Widget _widgetPadrao() => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -62,8 +62,14 @@ class _MyHomePageState extends State<MyHomePage> {
       retornoFuncao = _widgetPadrao();
     });
     if (email == emailControll.text && senha == senhaControll.text) {
-      print("ok");
-    } else {}
+
+      final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+     _scaffoldKey.currentState.showSnackBar(snackBar);
+
+    } else {
+      final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
   }
 
   @override
@@ -77,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(widget.title),
       ),

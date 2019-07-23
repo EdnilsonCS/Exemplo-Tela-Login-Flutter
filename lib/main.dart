@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:oauth2/oauth2.dart' as oauth2;
 
 void main() => runApp(MyApp());
 
@@ -25,9 +30,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final emailControll = TextEditingController();
+  final usuarioControll = TextEditingController();
   final senhaControll = TextEditingController();
-  final String email = "joao";
+  final String usuario = "joao";
   final String senha = "1234";
   Widget retornoFuncao;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -36,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           TextField(
             decoration: InputDecoration(labelText: 'Login'),
-            controller: emailControll,
+            controller: usuarioControll,
             autocorrect: true,
           ),
           TextField(
@@ -54,18 +59,45 @@ class _MyHomePageState extends State<MyHomePage> {
       );
 
   onChange() async {
+    Dio dio = new Dio();
+
+    final tokenEndpoint =
+        "https://apisistemas.desenvolvimento.ufs.br/api/rest/token";
+
+
+    final optionsDefault = RequestOptions(
+
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'});
+
+    
+    FormData getFromDataAccessTokenPost(login, senha) => FormData.from({
+
+        "client_id": "696a8721813f19e86fc272afb4761a18",
+
+        "client_secret": "c8729006256b7218dcdf549b87a7e51e",
+
+        "grant_type": "password",
+
+        "username": login,
+
+        "password": md5.convert(utf8.encode(senha)).toString()
+
+      });
+
+      Response response = await dio.post(tokenEndpoint,
+
+          queryParameters: getFromDataAccessTokenPost("ednilsoncardoso", ""), options:  optionsDefault);
+
     setState(() {
       retornoFuncao = CircularProgressIndicator();
     });
-    await Future.delayed(const Duration(seconds: 5));
     setState(() {
       retornoFuncao = _widgetPadrao();
     });
-    if (email == emailControll.text && senha == senhaControll.text) {
 
+    if (usuario == usuarioControll.text && senha == senhaControll.text) {
       final snackBar = SnackBar(content: Text('Autenticado com sucesso'));
-     _scaffoldKey.currentState.showSnackBar(snackBar);
-
+      _scaffoldKey.currentState.showSnackBar(snackBar);
     } else {
       final snackBar = SnackBar(content: Text('Erro na autenticação'));
       _scaffoldKey.currentState.showSnackBar(snackBar);
